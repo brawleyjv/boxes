@@ -128,7 +128,8 @@ class BServer:
             self.groups_by_name.get(box.ui_group,
                                     self.groups_by_name["Misc"]).add(box)
 
-        self.staticdir = os.path.join(os.path.dirname(__file__), '../static/')
+        self.staticdir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../static'))
+        self.samplesdir = os.path.join(self.staticdir, 'samples')
         self._languages = None
         self._cache: dict[Any, Any] = {}
         self.url_prefix = url_prefix
@@ -483,7 +484,7 @@ class BServer:
         if (not re.match(r"[a-zA-Z0-9_/-]+\.[a-zA-Z0-9]+", filename) or
                 not os.path.exists(path)):
             if re.match(r"samples/.*-thumb.jpg", filename):
-                path = os.path.join(self.staticdir, "nothing.png")
+                path = os.path.join(self.samplesdir, "nothing.png")
             else:
                 start_response("404 Not Found", [('Content-type', 'text/plain')])
                 return [b"Not found"]

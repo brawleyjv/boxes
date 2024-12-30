@@ -1,5 +1,9 @@
 function showThumbnail(img_link) {
     const img = document.getElementById("sample-preview");
+    if (img === null) {
+        console.error("Element with id 'sample-preview' not found.");
+        return;
+    }
     img.src = img_link;
     img.style.height = "auto";
     img.style.display = "block";
@@ -12,12 +16,20 @@ function showThumbnailEvt(evt) {
 
 function hideThumbnail() {
     const img = document.getElementById("sample-preview");
+    if (img === null) {
+        console.error("Element with id 'sample-preview' not found.");
+        return;
+    }
     img.style.display = "none";
 }
 
 function expandId(id) {
     const e = document.getElementById(id);
     const h = document.getElementById("h-" + id);
+    if (e === null || h === null) {
+        console.error(`Element with id '${id}' or 'h-${id}' not found.`);
+        return;
+    }
     e.style.display = "block";
     h.classList.add("open");
     h.setAttribute("aria-expanded", "true");
@@ -25,6 +37,10 @@ function expandId(id) {
 function collapseId(id) {
     const e = document.getElementById(id);
     const h = document.getElementById("h-" + id);
+    if (e === null || h === null) {
+        console.error(`Element with id '${id}' or 'h-${id}' not found.`);
+        return;
+    }
     e.style.display = "none";
     h.classList.remove("open");
     h.setAttribute("aria-expanded", "false");
@@ -33,6 +49,10 @@ function collapseId(id) {
 function toggleId(id) {
     const e = document.getElementById(id);
     const h = document.getElementById("h-" + id);
+    if (e === null || h === null) {
+        console.error(`Element with id '${id}' or 'h-${id}' not found.`);
+        return;
+    }
     if (e.style.display == null || e.style.display === "none") {
         expandId(id);
     } else {
@@ -95,18 +115,18 @@ function GridfinityTrayLayout_GenerateLayout(x, y, nx, ny, countx, county) {
     // ny # of gridfinity grids in Y
     // countx split x into this many
     // county split y into this many
-    layout = '';
+    var layout = '';
     if (countx == 0)
         countx = nx;
     if (county == 0)
         county = ny
-    stepx = x / countx;
-    stepy = y / county;
-    for (i = 0; i < countx; i++) {
-        line = ' |'.repeat(i) + ` ,> ${stepx}mm\n`;
+    var stepx = x / countx;
+    var stepy = y / county;
+    for (var i = 0; i < countx; i++) {
+        var line = ' |'.repeat(i) + ` ,> ${stepx}mm\n`;
         layout += line;
     }
-    for (i = 0; i < county; i++) {
+    for (var i = 0; i < county; i++) {
         layout += "+-".repeat(countx) + "+\n";
         layout += "| ".repeat(countx) + `|  ${stepy}mm\n`;
     }
@@ -125,14 +145,14 @@ function GridfinityTrayUpdateLayout(event) {
         }
     }
     console.log("updating");
-    nx = document.getElementById('nx').value;
-    ny = document.getElementById('ny').value;
-    countx = document.getElementById('countx').value;
-    county = document.getElementById('county').value;
-    margin = document.getElementById('margin').value;
-    x = nx*42 - margin
-    y = ny*42 - margin
-    layout_id = document.getElementById('layout');
+    var nx = document.getElementById('nx').value;
+    var ny = document.getElementById('ny').value;
+    var countx = document.getElementById('countx').value;
+    var county = document.getElementById('county').value;
+    var margin = document.getElementById('margin').value;
+    var x = nx*42 - margin
+    var y = ny*42 - margin
+    var layout_id = document.getElementById('layout');
     layout_id.value = GridfinityTrayLayout_GenerateLayout(x, y, nx, ny, countx, county);
 }
 
@@ -142,13 +162,13 @@ function setUpdated() {
 }
 function GridfinityTrayLayoutInit() {
     console.log("update init");
-    ids = ['nx', 'ny', 'countx', 'county', 'margin'];
+    var ids = ['nx', 'ny', 'countx', 'county', 'margin'];
     window.layoutUpdated=false;
-    for (id_string of ids) {
-        id = document.getElementById(id_string);
+    for (var id_string of ids) {
+        var id = document.getElementById(id_string);
         id.addEventListener('input', GridfinityTrayUpdateLayout);
     }
-    layout_id = document.getElementById('layout');
+    var layout_id = document.getElementById('layout');
     layout_id.addEventListener('change', setUpdated);
     layout_id.addEventListener('input', setUpdated);
 
@@ -335,21 +355,21 @@ function ParseSections(s) {
 
 function TrayLayout_GenerateLayout(sx, sy) {
 
-    sx = ParseSections(sx);
-    sy = ParseSections(sy);
-    nx = sx.length
-    ny = sy.length
-    layout = '';
+    var sx = ParseSections(sx);
+    var sy = ParseSections(sy);
+    var nx = sx.length
+    var ny = sy.length
+    var layout = '';
     if (nx <= 0)
         nx = 1;
     if (ny <= 0)
         ny = 1;
 
-    for (i = 0; i < nx; i++) {
-        line = ' |'.repeat(i) + ` ,> ${sx[i].toFixed(2)}mm\n`;
+    for (var i = 0; i < nx; i++) {
+        var line = ' |'.repeat(i) + ` ,> ${sx[i].toFixed(2)}mm\n`;
         layout += line;
     }
-    for (i = 0; i < ny; i++) {
+    for (var i = 0; i < ny; i++) {
         layout += "+-".repeat(nx) + "+\n";
         layout += "| ".repeat(nx) + `|  ${sy[i].toFixed(2)}mm\n`;
     }
@@ -366,22 +386,22 @@ function TrayUpdateLayout(event) {
             return;
         }
     }
-    sx = document.getElementById('sx').value;
-    sy = document.getElementById('sy').value;
-    layout_id = document.getElementById('layout');
+    var sx = document.getElementById('sx').value;
+    var sy = document.getElementById('sy').value;
+    var layout_id = document.getElementById('layout');
     layout_id.value = TrayLayout_GenerateLayout(sx, sy);
 }
 
 
 function TrayLayoutInit() {
-    ids = ['sx', 'sy'];
+    var ids = ['sx', 'sy'];
     window.layoutUpdated=false;
-    for (id_string of ids) {
-        id = document.getElementById(id_string);
+    for (var id_string of ids) {
+        var id = document.getElementById(id_string);
         id.addEventListener('input', TrayUpdateLayout);
     }
     TrayUpdateLayout();
-    layout_id = document.getElementById('layout');
+    var layout_id = document.getElementById('layout');
     layout_id.addEventListener('change', setUpdated);
     layout_id.addEventListener('input', setUpdated);
     layout_id.rows = 20;
@@ -410,7 +430,11 @@ document.addEventListener('DOMContentLoaded', function() {
 function collapseAll() {
     const h = document.getElementsByClassName("toggle");
     for (let el of h) {
-        id = el.getAttribute("data-id")
+        const id = el.getAttribute("data-id");
+        if (id === null) {
+            console.error("Element with class 'toggle' does not have 'data-id' attribute.");
+            continue;
+        }
         collapseId(id);
     }
 }
@@ -418,7 +442,11 @@ function collapseAll() {
 function expandAll() {
     const h = document.getElementsByClassName("toggle");
     for (let el of h) {
-        id = el.getAttribute("data-id")
+        const id = el.getAttribute("data-id");
+        if (id === null) {
+            console.error("Element with class 'toggle' does not have 'data-id' attribute.");
+            continue;
+        }
         expandId(id);
     }
 }
@@ -434,7 +462,7 @@ function showOnly(str) {
     str = str.toLowerCase();
     let matching_ids = document.querySelectorAll('[id^="search_id_"]')
     for (let id of matching_ids) {
-        name = id.id.replace("search_id_", "").toLowerCase();
+        const name = id.id.replace("search_id_", "").toLowerCase();
         if (name.includes(str) || id.textContent.toLowerCase().includes(str)) {
             id.style.display = "inline-block";
         } else {
